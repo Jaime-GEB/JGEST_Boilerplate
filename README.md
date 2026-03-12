@@ -1,18 +1,18 @@
 # React + TypeScript + Vite Template (JGest)
 
-Este es un template personalizado de React optimizado para el desarrollo rápido con Material UI, gestión de estado y servicios de API preconfigurados.
+This is a custom React template optimized for rapid development, with Material UI, state management, and pre-configured API services.
 
-## 🚀 Configuración del Proyecto
+## 🚀 Project Setup
 
-### 1. Configurar la API
-Para que el proyecto se comunique con tu backend, debes configurar la URL base en el archivo `.env`.
+### 1. Configure the API
+For the project to communicate with your backend, you need to set the base URL in the `.env` file.
 
-Crea o edita el archivo `.env` en la raíz del proyecto:
+Create or edit the `.env` file at the root of the project:
 ```env
-VITE_APP_API_URL='https://tu-api.com/api'
+VITE_APP_API_URL='https://your-api.com/api'
 ```
 
-### 2. Instalación y Ejecución
+### 2. Installation and Usage
 ```bash
 npm install
 npm run dev
@@ -20,71 +20,71 @@ npm run dev
 
 ---
 
-## 🛠️ Servicios y Utilidades
+## 🛠️ Services & Utilities
 
 ### `ApiService`
-Ubicación: `src/services/ApiService.ts`
+Location: `src/services/ApiService.ts`
 
-Un servicio basado en **Axios** para realizar peticiones HTTP de forma sencilla. Ya maneja la captura de errores y los devuelve en un formato consistente.
+An **Axios**-based service for making HTTP requests in a simple way. It already handles error catching and returns them in a consistent format.
 
-**Uso:**
+**Usage:**
 ```typescript
 import { api } from './services/ApiService';
 
-// Ejemplo GET
-const data = await api.get<MiTipo>('/endpoint');
+// GET example
+const data = await api.get<MyType>('/endpoint');
 
-// Ejemplo POST
-const result = await api.post('/endpoint', { nombre: 'Ejemplo' });
+// POST example
+const result = await api.post('/endpoint', { name: 'Example' });
 ```
 
 ### `useNotification` (Hook)
-Ubicación: `src/hooks/shared/useNotification.ts`
+Location: `src/hooks/shared/useNotification.ts`
 
-Permite mostrar alertas (notificaciones) en la interfaz de usuario. Debe usarse dentro del `NotificationProvider`.
+Allows displaying alerts (notifications) in the user interface. Must be used inside the `NotificationProvider`.
 
-**Uso:**
+**Usage:**
 ```typescript
 import { useNotification } from './hooks/shared/useNotification';
 
 const { showNotification } = useNotification();
 
-// Mostrar mensaje de éxito
-showNotification('Operación exitosa', 'success');
+// Show a success message
+showNotification('Operation successful', 'success');
 
-// Manejar errores de la API automáticamente
+// Automatically handle API errors
 try {
     await api.post(...);
 } catch (error) {
-    showNotification(error); // Muestra el error formateado por el ApiService
+    showNotification(error); // Displays the error formatted by ApiService
 }
 ```
 
 ### `useSetTimezone` (Hook)
-Ubicación: `src/hooks/shared/useSetTimezone.ts`
+Location: `src/hooks/shared/useSetTimezone.ts`
 
-Utilidad para formatear fechas recibidas de la API a la zona horaria local (`Europe/Madrid`).
+Utility for formatting dates received from the API to the local timezone (`Europe/Madrid`).
 
-**Uso:**
+**Usage:**
 ```typescript
 import useSetTimezone from './hooks/shared/useSetTimezone';
 
 const { setTimezone } = useSetTimezone();
-const fechaFormateada = setTimezone('2024-03-12T10:00:00Z');
-// Salida: "12/3/2024, 11:00:00" (ajustado a Madrid)
+const formattedDate = setTimezone('2024-03-12T10:00:00Z');
+// Output: "12/3/2024, 11:00:00" (adjusted to Madrid)
 ```
 
 ---
 
-## 🧩 Componentes Destacados
+## 🧩 Featured Components
 
 ### `ThemeToggle`
-Ubicación: `src/components/main/ThemeSwitch.tsx`
+Location: `src/components/main/ThemeSwitch.tsx`
 
-Un componente de interruptor (Switch) estilizado para alternar entre el modo claro y oscuro. Utiliza un store global para persistir la preferencia.
+A styled Switch component to toggle between light and dark mode. Uses a global store to persist the preference.
 
-**Uso:**
-Simplemente importa y coloca el componente en tu barra de navegación o sidebar:
+**Usage:**
+Simply import and place the component in your navbar or sidebar:
 ```tsx
 import ThemeToggle from './components/main/ThemeSwitch';
 
@@ -92,25 +92,25 @@ import ThemeToggle from './components/main/ThemeSwitch';
 ```
 
 ### `MyModal`
-Ubicación: `src/components/shared/MyModal.tsx`
+Location: `src/components/shared/MyModal.tsx`
 
-Un componente base para crear modales consistentes, con fondo desenfocado y scroll interno.
+A base component for creating consistent modals, with a blurred backdrop and internal scroll.
 
-**Propiedades:**
-- `children`: Contenido del modal.
-- `minWidth`: Ancho mínimo (por defecto 800px).
-- `onClose`: Función que se ejecuta al cerrar o hacer clic fuera.
+**Props:**
+- `children`: Modal content.
+- `minWidth`: Minimum width (default 800px).
+- `onClose`: Function called when closing or clicking outside.
 
 ### `MyPopover`
-Ubicación: `src/components/shared/MyPopover.tsx`
+Location: `src/components/shared/MyPopover.tsx`
 
-Componente para mostrar menús contextuales o popovers flexibles con posicionamiento automático.
+Component for displaying context menus or flexible popovers with automatic positioning.
 
 ---
 
-## 🏗️ Estructura de Carpetas
-- `src/components`: Componentes visuales (shared/main).
-- `src/hooks`: Lógica reutilizable y hooks personalizados.
-- `src/providers`: Proveedores de contexto (Notificaciones, Auth, etc.).
-- `src/services`: Llamadas a APIs y servicios externos.
-- `src/store`: Gestión de estado global (Zustand/Context).
+## 🏗️ Folder Structure
+- `src/components`: Visual components (shared/main).
+- `src/hooks`: Reusable logic and custom hooks.
+- `src/providers`: Context providers (Notifications, Auth, etc.).
+- `src/services`: API calls and external services.
+- `src/store`: Global state management (Zustand/Context).
