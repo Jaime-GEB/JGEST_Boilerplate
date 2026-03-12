@@ -1,73 +1,116 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite Template (JGest)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es un template personalizado de React optimizado para el desarrollo rápido con Material UI, gestión de estado y servicios de API preconfigurados.
 
-Currently, two official plugins are available:
+## 🚀 Configuración del Proyecto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 1. Configurar la API
+Para que el proyecto se comunique con tu backend, debes configurar la URL base en el archivo `.env`.
 
-## React Compiler
-
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Crea o edita el archivo `.env` en la raíz del proyecto:
+```env
+VITE_APP_API_URL='https://tu-api.com/api'
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 2. Instalación y Ejecución
+```bash
+npm install
+npm run dev
 ```
+
+---
+
+## 🛠️ Servicios y Utilidades
+
+### `ApiService`
+Ubicación: `src/services/ApiService.ts`
+
+Un servicio basado en **Axios** para realizar peticiones HTTP de forma sencilla. Ya maneja la captura de errores y los devuelve en un formato consistente.
+
+**Uso:**
+```typescript
+import { api } from './services/ApiService';
+
+// Ejemplo GET
+const data = await api.get<MiTipo>('/endpoint');
+
+// Ejemplo POST
+const result = await api.post('/endpoint', { nombre: 'Ejemplo' });
+```
+
+### `useNotification` (Hook)
+Ubicación: `src/hooks/shared/useNotification.ts`
+
+Permite mostrar alertas (notificaciones) en la interfaz de usuario. Debe usarse dentro del `NotificationProvider`.
+
+**Uso:**
+```typescript
+import { useNotification } from './hooks/shared/useNotification';
+
+const { showNotification } = useNotification();
+
+// Mostrar mensaje de éxito
+showNotification('Operación exitosa', 'success');
+
+// Manejar errores de la API automáticamente
+try {
+    await api.post(...);
+} catch (error) {
+    showNotification(error); // Muestra el error formateado por el ApiService
+}
+```
+
+### `useSetTimezone` (Hook)
+Ubicación: `src/hooks/shared/useSetTimezone.ts`
+
+Utilidad para formatear fechas recibidas de la API a la zona horaria local (`Europe/Madrid`).
+
+**Uso:**
+```typescript
+import useSetTimezone from './hooks/shared/useSetTimezone';
+
+const { setTimezone } = useSetTimezone();
+const fechaFormateada = setTimezone('2024-03-12T10:00:00Z');
+// Salida: "12/3/2024, 11:00:00" (ajustado a Madrid)
+```
+
+---
+
+## 🧩 Componentes Destacados
+
+### `ThemeToggle`
+Ubicación: `src/components/main/ThemeSwitch.tsx`
+
+Un componente de interruptor (Switch) estilizado para alternar entre el modo claro y oscuro. Utiliza un store global para persistir la preferencia.
+
+**Uso:**
+Simplemente importa y coloca el componente en tu barra de navegación o sidebar:
+```tsx
+import ThemeToggle from './components/main/ThemeSwitch';
+
+<ThemeToggle />
+```
+
+### `MyModal`
+Ubicación: `src/components/shared/MyModal.tsx`
+
+Un componente base para crear modales consistentes, con fondo desenfocado y scroll interno.
+
+**Propiedades:**
+- `children`: Contenido del modal.
+- `minWidth`: Ancho mínimo (por defecto 800px).
+- `onClose`: Función que se ejecuta al cerrar o hacer clic fuera.
+
+### `MyPopover`
+Ubicación: `src/components/shared/MyPopover.tsx`
+
+Componente para mostrar menús contextuales o popovers flexibles con posicionamiento automático.
+
+---
+
+## 🏗️ Estructura de Carpetas
+- `src/components`: Componentes visuales (shared/main).
+- `src/hooks`: Lógica reutilizable y hooks personalizados.
+- `src/providers`: Proveedores de contexto (Notificaciones, Auth, etc.).
+- `src/services`: Llamadas a APIs y servicios externos.
+- `src/store`: Gestión de estado global (Zustand/Context).
