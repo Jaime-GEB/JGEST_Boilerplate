@@ -1,16 +1,14 @@
-import { ApiService } from "../../services/ToBeTested/ApiService-New";
+import { ApiService } from './../../services/ApiServiceExtensible/ApiService-Class';
 import { useCallback, useState} from "react";
 
-
-const useApiDelete = <T>(api:string) => {
+const useApiDelete = <T>(endpoint:string) => {
     const [response, setResponse] = useState<T>();
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
 
     const deleteApiResponse = useCallback(async() =>{
         setLoading(true);
-        const apiService = new ApiService<T>(`/${api}`,true);
-
+        const apiService = new ApiService<T>(endpoint,true);
         try{
             const data = await apiService.get();
             setLoading(false);
@@ -18,7 +16,7 @@ const useApiDelete = <T>(api:string) => {
         }catch(e:any){
             setError(e?.message);
         }
-    }, [api])
+    }, [endpoint])
 
     return{ response, loading, error, deleteData:deleteApiResponse }
 }

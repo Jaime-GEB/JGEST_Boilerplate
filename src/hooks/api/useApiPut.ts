@@ -1,15 +1,15 @@
-import { ApiService } from "../../services/ToBeTested/ApiService-New";
+import { ApiService } from './../../services/ApiServiceExtensible/ApiService-Class';
 import { useCallback, useState} from "react";
 
 
-const useApiPut = <T>(api:string, input:T) => {
+const useApiPut = <T>(endpoint:string, input:T) => {
     const [response, setResponse] = useState<T>();
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
 
     const putApiInput = useCallback(async() =>{
         setLoading(true);
-        const apiService = new ApiService<T>(`/${api}`,true);
+        const apiService = new ApiService<T>(endpoint,true);
 
         try{
             const data = await apiService.put(input);
@@ -18,7 +18,7 @@ const useApiPut = <T>(api:string, input:T) => {
         }catch(e:any){
             setError(e?.message);
         }
-    }, [api, input])
+    }, [endpoint, input])
 
     return{ response, loading, error, putData:putApiInput }
 }
