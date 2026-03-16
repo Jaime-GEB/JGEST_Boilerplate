@@ -9,10 +9,10 @@ export class ApiService<ItemType, ResponseType = ItemType> {
     protected headers: any;
     protected credentials: boolean;
 
-    constructor(endpoint?: string, baseURL: string = import.meta.env.VITE_APP_API_URL, credentials?: boolean, headers?: any) {
+    constructor(endpoint?: string, credentials?: boolean, headers?: any) {
         this.endpoint = endpoint ?? '';
-        this.baseURL = baseURL;
-        this.headers = headers ?? { 'Content-Type': 'application/json', 'X-API-Key': import.meta.env.VITE_APP_API_KEY as string, };
+        this.baseURL = import.meta.env.VITE_APP_API_URL;
+        this.headers = headers ?? { 'Content-Type': 'application/json'};
         this.credentials = credentials ?? false;
 
         this.api = axios.create({
@@ -66,9 +66,9 @@ export class ApiService<ItemType, ResponseType = ItemType> {
         }
     }
 
-    get(endpoint: string = this.endpoint, headers: any = this.headers): Promise<ItemType[]> {
-        return this.handleRequest<ResponseType[]>(this.api.get(endpoint, { headers }), true)
-            .then((data) => (data || []).map((item) => this.parseResponse(item)));
+    get(endpoint: string = this.endpoint, headers: any = this.headers): Promise<ItemType> {
+        return this.handleRequest<ItemType>(this.api.get(endpoint, { headers }), true)
+            .then((data) => (data));
     }
 
     post(endpoint: string, body: any, headers?: any): Promise<ItemType> {
@@ -91,4 +91,3 @@ export class ApiService<ItemType, ResponseType = ItemType> {
             .then((data) => this.parseResponse(data));
     }
 }
-
