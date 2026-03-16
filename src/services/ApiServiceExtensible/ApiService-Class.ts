@@ -71,17 +71,17 @@ export class ApiService<ItemType, ResponseType = ItemType> {
             .then((data) => (data));
     }
 
-    post(endpoint: string, body: any, headers?: any): Promise<ItemType> {
+    post(body: any, endpoint: string = this.endpoint, headers?: any): Promise<ItemType> {
         return this.handleRequest<ResponseType>(this.api.post(endpoint, body, { headers }))
             .then((data) => this.parseResponse(data));
     }
 
-    put(endpoint: string, body: any, headers?: any): Promise<ItemType> {
+    put(body: any, endpoint: string = this.endpoint, headers?: any): Promise<ItemType> {
         return this.handleRequest<ResponseType>(this.api.put(endpoint, body, { headers }))
             .then((data) => this.parseResponse(data));
     }
 
-    patch(endpoint: string, body: any, headers?: any): Promise<ItemType> {
+    patch(body: any, endpoint: string = this.endpoint, headers?: any): Promise<ItemType> {
         return this.handleRequest<ResponseType>(this.api.patch(endpoint, body, { headers }))
             .then((data) => this.parseResponse(data));
     }
