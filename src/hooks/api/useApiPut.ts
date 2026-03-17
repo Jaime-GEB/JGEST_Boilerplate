@@ -22,5 +22,4 @@ const useApiPut = <T>(endpoint:string, input:T) => {
 
     return{ response, loading, error, putData:putApiInput }
 }
-
 export default useApiPut;
