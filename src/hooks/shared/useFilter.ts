@@ -1,9 +1,8 @@
 //Hook usado para filtrar arrays de datos
-
 interface ResponseType<T> {
     dataArray: T[];
-    filterBy: any;
     key: keyof T;
+    filterBy: any;
 }
 interface RangeResponseType<T> {
     dataArray: T[];
@@ -12,24 +11,23 @@ interface RangeResponseType<T> {
     filterMax: any;
 }
 
-const useFilter = () =>{    
-
-    const equalTo = <T>({dataArray, filterBy, key} :ResponseType<T>) : T[] => {
+const useFilter = () =>{
+    const equalTo = <T>({dataArray, key, filterBy} :ResponseType<T>) : T[] => {
         return (dataArray.filter( data => data[key] === filterBy));
     }
-    const moreThan = <T>({dataArray, filterBy, key} :ResponseType<T>) : T[] => {
+    const moreThan = <T>({dataArray, key, filterBy} :ResponseType<T>) : T[] => {
         return (dataArray.filter( data => data[key] > filterBy));
     }
-    const equalMoreThan = <T>({dataArray, filterBy, key} :ResponseType<T>) : T[] => {
+    const equalMoreThan = <T>({dataArray, key, filterBy} :ResponseType<T>) : T[] => {
         return (dataArray.filter( data => data[key] >= filterBy));
     }
-    const lessThan = <T>({dataArray, filterBy, key} :ResponseType<T>) : T[] => {
+    const lessThan = <T>({dataArray, key, filterBy} :ResponseType<T>) : T[] => {
         return (dataArray.filter( data => data[key] < filterBy));
     }
-    const equalLessThan = <T>({dataArray, filterBy, key} :ResponseType<T>) : T[] => {
+    const equalLessThan = <T>({dataArray, key, filterBy} :ResponseType<T>) : T[] => {
         return (dataArray.filter( data => data[key] <= filterBy));
     }
-    const inRange = <T>({dataArray, filterMin, filterMax, key} :RangeResponseType<T>) : T[] => {
+    const inRange = <T>({dataArray, key, filterMin, filterMax} :RangeResponseType<T>) : T[] => {
         return (dataArray.filter( (data) => data[key] <= filterMin && data[key] >= filterMax));
     }
     const byIndex = <T>({dataArray, filterBy} :ResponseType<T>) : T[] => {
